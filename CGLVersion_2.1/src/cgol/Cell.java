@@ -1,9 +1,9 @@
 package cgol;
 
 public class Cell {
-	private boolean cellStatus=true;
-	private int row;
-	private int col;
+	public boolean cellStatus=false;
+	public int row;
+	public int col;
 	public Cell(int row, int col)
 	{
 		this.row=row;
@@ -21,6 +21,11 @@ public class Cell {
 	public int getCol()
 	{
 		return this.col;
+	}
+	public void setStatus(boolean b) {
+		this.cellStatus=b;
+
+		
 	}
 
 }

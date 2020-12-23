@@ -15,14 +15,14 @@ public class TestCell {
 	@Test
 	public void testCellStatus() {
 		Cell c =new Cell(1,2);
-		System.out.println("Testcase -1 Passed");
-		Assertions.assertEquals(true, c.getStatus());
+		System.out.println("======== CellSatus Passed ======");
+		Assertions.assertEquals(false, c.getStatus());
 	}
 	@Test
 	public void testCellPos() {
 		Cell c1=new Cell(1, 2);
 
-		System.out.println("Testcase -2 Passed");
+		System.out.println("\"======== CellPositions Passed ======\"");
 		Assertions.assertEquals(1, c1.getRow());
 		Assertions.assertEquals(2, c1.getCol());
 	}
