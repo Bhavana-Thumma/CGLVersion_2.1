@@ -99,5 +99,42 @@ public class testBoard {
         }     
 
 	}
+	
+	@Test
+	public void testGenerateNextGen1() {
+		Board b=new Board();
+		int n=4;
+		int c[][]= {{0, 2}, {0, 1}, {0, 3}, {1, 2}, {1, 3}, {1, 1}};
+		int l[][]= {{0, 1}, {0, 3}, {1, 1}, {1, 3}, {2, 2}};
+		Cell[][] next = new Cell[n][n];
+		for(int row=0; row<n; row++)
+		{
+			for(int col=0; col<n; col++)
+			{
+				next[row][col]=new Cell(row, col);
+			}
+
+		}
+		next[0][1].setStatus(true);
+		next[0][3].setStatus(true);
+		next[1][1].setStatus(true);
+		next[1][3].setStatus(true);
+		next[2][2].setStatus(true);
+		
+		Cell[][] Curgrid= b.createBoard(n, c);
+		Cell[][] newgrid= b.generateNextGeneration(Curgrid);
+        
+        System.out.println("======== GenerateNextGen Passed ========");
+        for(int i=0; i<next.length; i++)
+        {
+        	for(int j=0; j<next.length; j++)
+        	{
+        		
+        		Assertions.assertEquals(next[i][j].getStatus(), newgrid[i][j].getStatus() );
+        		
+        	}
+        }     
+
+	}
 
 }
