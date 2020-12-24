@@ -2,6 +2,8 @@ package cgol;
 
 import java.util.Scanner;
 
+// ConwayGameOfLife class is to operate on Board and cells, to make it concrete to PLAY the Game.
+//
 public class ConwayGameOfLife {
 
 //	public static void main(String[] args) {
@@ -37,6 +39,9 @@ public class ConwayGameOfLife {
 	
     public Cell[][] nthGen(Cell[][] c, int nth)
     {
+//    	to generate the given nth generation from the current generation.
+//    	1st - Current
+//    	2nd - (Current + 1)th Gen and so on....
     	Board b = new Board();   	
 
     	Cell[][] current=c;

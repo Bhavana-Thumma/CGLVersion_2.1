@@ -1,7 +1,12 @@
 package cgol;
 
+/*
+ * Cell class is created specifically to keep the properties of a cell, that are position of a cell
+ * including row and column and Status of cell(Alive or Dead). 
+ */
+
 public class Cell {
-	public boolean cellStatus=false;
+	public boolean cellStatus=false; //Dead initially for all the cells.
 	public int row;
 	public int col;
 	public Cell(int row, int col)
