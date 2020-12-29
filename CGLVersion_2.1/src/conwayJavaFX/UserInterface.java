@@ -1,10 +1,12 @@
 package conwayJavaFX;
+import cgol.*;
+import cgol.Cell;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
-import cgol.Board;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -265,9 +267,31 @@ public class UserInterface {
 	 * This method is called when the Load button is pressed. It tries to load the data onto the
 	 * board for the simulation.
 	 */
+	Cell[][] grd;
 	private void loadImageData() {
 		try {
 			// Your code goes here......
+			ConwayGameOfLife cgol=new ConwayGameOfLife();
+			Scanner sc = new Scanner(new File("test01.txt"));
+			ArrayList<Integer> livelist = new ArrayList<Integer>();
+			int size=0;	
+			while(sc.hasNext())
+			{
+				livelist.add(sc.nextInt());
+			}
+			int len=livelist.size()/2;
+			int[][] l= new int[len][2];
+			for(int i=0; i<len; i++)
+			{
+				l[i][0]=livelist.get(size++);
+				l[i][1]=livelist.get(size++);
+			}
+//			System.out.println(size);
+			grd= oddGameBoard.createBoard(boardSizeWidth,boardSizeHeight, l);
+			populateCanvas(oddCanvas);
+					
+			
+			
 			
 		}
 		catch (Exception e)  {
@@ -277,6 +301,42 @@ public class UserInterface {
 		button_Load.setDisable(true);				// Disable the Load button, since it is done
 		button_Start.setDisable(false);				// Enable the Start button
 	};												// and wait for the User to press it.
+
+	private void populateCanvas(Pane Canvas) {
+		if(Canvas.equals(evenCanvas))
+		{
+			String s=evenGameBoard.printBoard(grd);
+			System.out.println(s);
+		}
+		else
+		{
+			String s=oddGameBoard.printBoard(grd);
+			System.out.println(s);
+		}
+		String s=oddGameBoard.printBoard(grd);
+		System.out.println(s);
+		int livecount=0;
+		String[]  lines= s.split("\n");
+		for(int i=0; i<lines.length; i++)
+		{
+			for(int j=0; j<lines[i].length(); j++)
+			{
+				if(lines[i].charAt(j)=='*')
+				{
+					livecount+=1;
+					Rectangle r=new Rectangle(6*j+20, 6*i+20, 5, 5);
+					oddCanvas.getChildren().add(r);
+				}
+				
+			}
+			
+		}
+		System.out.println(livecount);
+		window.getChildren().add(oddCanvas);
+ 		
+		
+	}
+
 
 	/**********
 	 * This method removes the start button, sets up the stop button, and starts the simulation
@@ -308,6 +368,27 @@ public class UserInterface {
 		// Use the toggle to flip back and forth between the current generation and next generation boards.
 		
 		// Your code goes here...
+
+		evenGameBoard = oddGameBoard; 
+		window.getChildren().remove(oddCanvas);
+		if(toggle)
+		{
+			oddCanvas.getChildren().clear();
+			window.getChildren().remove(oddCanvas);
+			grd=oddGameBoard.generateNextGeneration(grd);
+			populateCanvas(evenCanvas);
+			toggle=false;
+			
+		}
+		else
+		{
+			evenCanvas.getChildren().clear();
+			window.getChildren().remove(evenCanvas);
+			grd=oddGameBoard.generateNextGeneration(grd);
+			populateCanvas(oddCanvas);
+			toggle=true;
+			
+		}
 	}
 
 	/**********

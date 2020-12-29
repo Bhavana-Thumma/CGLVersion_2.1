@@ -8,12 +8,12 @@ public class Board
 
 	public Cell[][] grid;
 
-	public Cell[][] createBoard(int n, int[][] l) 
+	public Cell[][] createBoard(int w, int h, int[][] l) 
 	{
-		grid=new Cell[n][n];
-		for(int r=0; r<n; r++)
+		grid=new Cell[h][w];
+		for(int r=0; r<h; r++)
 		{
-			for(int c=0; c<n; c++)
+			for(int c=0; c<w; c++)
 			{
 				grid[r][c]=new Cell(r, c); //initially setting up all the cells with false values.
 				
@@ -37,20 +37,21 @@ public class Board
 
 	public Cell[][] generateNextGeneration(Cell[][] current) 
 	{
-		int n = current.length;
-        Cell[][] nextgen = new Cell[n][n];
-		for(int r=0; r<n; r++)
+		int h = current.length;
+		int w = current[0].length;
+        Cell[][] nextgen = new Cell[h][w];
+		for(int r=0; r<h; r++)
 		{
-			for(int c=0; c<n; c++)
+			for(int c=0; c<w; c++)
 			{
 				nextgen[r][c]=new Cell(r, c); // setting up a new board with all the dead cells to generate the next generation.
 				
 			}
 
 		}
-        for(int i=0;i<n;i++)
+        for(int i=0;i<h;i++)
         {
-            for(int j=0;j<n;j++)
+            for(int j=0;j<w;j++)
             {
                 int alives= checkAlive(current,i,j);
             	//here we are checking the alive cells and updating alive positions of the cells.
@@ -103,15 +104,17 @@ public class Board
             }
             s=s+"\n";
         }
-		return s;
+		return s; 
 		
 	}
+
 
 	public int checkAlive(Cell[][] current, int row_pos,int col_pos) {
 		
 //		checking the alive neighbor cells.
 		int alive=0;
-        int n = current.length;
+        int h = current.length;
+        int w = current[0].length;
         for(int i=row_pos-1;i<=row_pos+1;i++)
         {
             for(int j=col_pos-1;j<=col_pos+1;j++)
@@ -120,7 +123,7 @@ public class Board
                 if(i!=row_pos || j!=col_pos)
                 {
                     // System.out.println(i+" "+j);
-                    if(i>=0 && i<n && j>=0 && j<n && current[i][j].getStatus())
+                    if(i>=0 && i<h && j>=0 && j<w && current[i][j].getStatus())
                     {
                         // System.out.println(i+" "+j);
                         alive+=1;
