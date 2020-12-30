@@ -303,16 +303,17 @@ public class UserInterface {
 	};												// and wait for the User to press it.
 
 	private void populateCanvas(Pane Canvas) {
-		if(Canvas.equals(evenCanvas))
-		{
-			String s=evenGameBoard.printBoard(grd);
-			System.out.println(s);
-		}
-		else
-		{
-			String s=oddGameBoard.printBoard(grd);
-			System.out.println(s);
-		}
+//		if(Canvas.equals(evenCanvas))
+//		{
+//			String s=evenGameBoard.printBoard(grd);
+//			System.out.println(s);
+//		}
+//		else
+//		{
+//			String s=oddGameBoard.printBoard(grd);
+//			System.out.println(s);
+//		}
+
 		String s=oddGameBoard.printBoard(grd);
 		System.out.println(s);
 		int livecount=0;
@@ -324,8 +325,8 @@ public class UserInterface {
 				if(lines[i].charAt(j)=='*')
 				{
 					livecount+=1;
-					Rectangle r=new Rectangle(6*j+20, 6*i+20, 5, 5);
-					oddCanvas.getChildren().add(r);
+					Rectangle rect=new Rectangle(6*j+20, 6*i+20, 5, 5);
+					oddCanvas.getChildren().add(rect);
 				}
 				
 			}
