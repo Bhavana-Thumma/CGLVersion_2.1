@@ -1,10 +1,9 @@
 package conwayJavaFX;
-import cgol.*;
-import cgol.Cell;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import javafx.animation.Animation;
@@ -271,24 +270,21 @@ public class UserInterface {
 	private void loadImageData() {
 		try {
 			// Your code goes here......
-			ConwayGameOfLife cgol=new ConwayGameOfLife();
-			Scanner sc = new Scanner(new File("test01.txt"));
-			ArrayList<Integer> livelist = new ArrayList<Integer>();
-			int size=0;	
-			while(sc.hasNext())
-			{
-				livelist.add(sc.nextInt());
+			Scanner scan = new Scanner(new File(str_FileName));
+			ArrayList<Integer> list = new ArrayList<Integer>();
+			while(scan.hasNext()) {
+				list.add(scan.nextInt());
+				
 			}
-			int len=livelist.size()/2;
-			int[][] l= new int[len][2];
-			for(int i=0; i<len; i++)
-			{
-				l[i][0]=livelist.get(size++);
-				l[i][1]=livelist.get(size++);
+			int [][] liveCells = new int[list.size()/2][2];
+			int k=0;
+			for(int i=0;i<list.size()/2;i++) {
+				liveCells[i][0]=list.get(k++);
+				liveCells[i][1]=list.get(k++);
 			}
-//			System.out.println(size);
-			grd= oddGameBoard.createBoard(boardSizeWidth,boardSizeHeight, l);
-			populateCanvas(oddCanvas);
+//			System.out.println(Arrays.deepToString(liveCells));
+			oddGameBoard.createBoard(boardSizeWidth, boardSizeHeight,liveCells);
+			populateCanvas(oddCanvas, liveCells);
 					
 			
 			
@@ -302,41 +298,26 @@ public class UserInterface {
 		button_Start.setDisable(false);				// Enable the Start button
 	};												// and wait for the User to press it.
 
-	private void populateCanvas(Pane Canvas) {
-//		if(Canvas.equals(evenCanvas))
-//		{
-//			String s=evenGameBoard.printBoard(grd);
-//			System.out.println(s);
-//		}
-//		else
-//		{
-//			String s=oddGameBoard.printBoard(grd);
-//			System.out.println(s);
-//		}
-
-		String s=oddGameBoard.printBoard(grd);
-		System.out.println(s);
-		int livecount=0;
-		String[]  lines= s.split("\n");
-		for(int i=0; i<lines.length; i++)
-		{
-			for(int j=0; j<lines[i].length(); j++)
-			{
-				if(lines[i].charAt(j)=='*')
-				{
-					livecount+=1;
-					Rectangle rect=new Rectangle(6*j+20, 6*i+20, 5, 5);
-					oddCanvas.getChildren().add(rect);
-				}
-				
-			}
-			
-		}
-		System.out.println(livecount);
-		window.getChildren().add(oddCanvas);
- 		
+	private void populateCanvas(Pane Canvas, int[][] l) {
+    	Cell[][] grid = oddGameBoard.createBoard(boardSizeWidth, boardSizeWidth, l);
+    	//System.out.println(s);
+    	int a =0;
+    	for(int i=0;i<grid.length-1;i++) {
+    		for(int j=0;j<grid[i].length-1;j++) {
+    			if(grid[i][j].getStatus()) {
+    				a=a+1;
+    				Rectangle rc = new Rectangle(6*j+20,6*i+20,5,5);
+    				Canvas.getChildren().add(rc);
+    			}
+    		}
+    	}
+    	System.out.println(a);
+    	window.getChildren().add(Canvas);
 		
-	}
+
+}
+		
+	
 
 
 	/**********
@@ -370,26 +351,28 @@ public class UserInterface {
 		
 		// Your code goes here...
 
-		evenGameBoard = oddGameBoard; 
-		window.getChildren().remove(oddCanvas);
-		if(toggle)
-		{
-			oddCanvas.getChildren().clear();
-			window.getChildren().remove(oddCanvas);
-			grd=oddGameBoard.generateNextGeneration(grd);
-			populateCanvas(evenCanvas);
-			toggle=false;
-			
-		}
-		else
-		{
-			evenCanvas.getChildren().clear();
-			window.getChildren().remove(evenCanvas);
-			grd=oddGameBoard.generateNextGeneration(grd);
-			populateCanvas(oddCanvas);
-			toggle=true;
-			
-		}
+//		evenGameBoard = oddGameBoard; 
+//		window.getChildren().remove(oddCanvas);
+//		if(toggle)
+//		{
+//			oddCanvas.getChildren().clear();
+//			window.getChildren().remove(oddCanvas);
+//			grd=oddGameBoard.generateNextGeneration(grd);
+//			populateCanvas(evenCanvas);
+//			toggle=false;
+//			
+//		}
+//		else
+//		{
+//			evenCanvas.getChildren().clear();
+//			window.getChildren().remove(evenCanvas);
+//			grd=oddGameBoard.generateNextGeneration(grd);
+//			populateCanvas(oddCanvas);
+//			toggle=true;
+//			
+//		}
+
+		populateCanvas(evenCanvas, null);
 	}
 
 	/**********
