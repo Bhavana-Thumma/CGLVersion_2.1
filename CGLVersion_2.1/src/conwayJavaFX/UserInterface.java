@@ -1,4 +1,6 @@
 package conwayJavaFX;
+import cgol.*;
+import cgol.Cell;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -267,25 +269,33 @@ public class UserInterface {
 	 * board for the simulation.
 	 */
 	Cell[][] grd;
+	Cell[][] grid;
+	Cell[][] grid1;
+	
+	
 	private void loadImageData() {
 		try {
+			
 			// Your code goes here......
+			
+			int n=0;
 			Scanner scan = new Scanner(new File(str_FileName));
-			ArrayList<Integer> list = new ArrayList<Integer>();
+			ArrayList<Integer> pos = new ArrayList<Integer>();
 			while(scan.hasNext()) {
-				list.add(scan.nextInt());
-				
+				pos.add(scan.nextInt());				
 			}
-			int [][] liveCells = new int[list.size()/2][2];
-			int k=0;
-			for(int i=0;i<list.size()/2;i++) {
-				liveCells[i][0]=list.get(k++);
-				liveCells[i][1]=list.get(k++);
+			int l=pos.size()/2;
+			int [][] liveCells = new int[l][2];
+			
+			for(int i=0;i<l;i++) 
+			{
+				liveCells[i][0]=pos.get(n++);
+				liveCells[i][1]=pos.get(n++);
 			}
-//			System.out.println(Arrays.deepToString(liveCells));
-			oddGameBoard.createBoard(boardSizeWidth, boardSizeHeight,liveCells);
-			populateCanvas(oddCanvas, liveCells);
-					
+
+			grid=oddGameBoard.createBoard(boardSizeWidth, boardSizeHeight,liveCells);
+			grid1=oddGameBoard.createBoard(boardSizeWidth, boardSizeHeight,liveCells);
+			updateView(oddCanvas, grid);			
 			
 			
 			
@@ -298,22 +308,25 @@ public class UserInterface {
 		button_Start.setDisable(false);				// Enable the Start button
 	};												// and wait for the User to press it.
 
-	private void populateCanvas(Pane Canvas, int[][] l) {
-    	Cell[][] grid = oddGameBoard.createBoard(boardSizeWidth, boardSizeWidth, l);
-    	//System.out.println(s);
-    	int a =0;
-    	for(int i=0;i<grid.length-1;i++) {
-    		for(int j=0;j<grid[i].length-1;j++) {
-    			if(grid[i][j].getStatus()) {
-    				a=a+1;
-    				Rectangle rc = new Rectangle(6*j+20,6*i+20,5,5);
-    				Canvas.getChildren().add(rc);
+	
+	private void updateView(Pane Canvas, Cell[][] grid) 
+	{
+
+//    	int lc =0;
+    	for(int i=0;i<grid.length-1;i++) 
+    	{
+    		for(int j=0;j<grid[i].length-1;j++) 
+    		{
+    			if(grid[i][j].getStatus()) 
+    			{
+//    				lc+=1;
+    				Rectangle rect = new Rectangle(6*j+150,6*i-100,5,5);
+    				Canvas.getChildren().add(rect);
     			}
     		}
     	}
-    	System.out.println(a);
-    	window.getChildren().add(Canvas);
-		
+//    	System.out.println(lc);
+    	window.getChildren().add(Canvas);		
 
 }
 		
@@ -350,29 +363,32 @@ public class UserInterface {
 		// Use the toggle to flip back and forth between the current generation and next generation boards.
 		
 		// Your code goes here...
+		
+		
+		if(toggle)
+		{
+			toggle=false;
+			oddCanvas.getChildren().clear();
+			window.getChildren().remove(oddCanvas);
+			grd=oddGameBoard.generateNextGeneration(grid);
+			grid =grd;
+			updateView(evenCanvas, grid);
+			
+			
+		}
+		else
+		{
+			toggle=true;
+			evenCanvas.getChildren().clear();
+			window.getChildren().remove(evenCanvas);
+			grd=oddGameBoard.generateNextGeneration(grid);
+			grid =grd;
+			updateView(oddCanvas, grid);
+			
+			
+		}
 
-//		evenGameBoard = oddGameBoard; 
-//		window.getChildren().remove(oddCanvas);
-//		if(toggle)
-//		{
-//			oddCanvas.getChildren().clear();
-//			window.getChildren().remove(oddCanvas);
-//			grd=oddGameBoard.generateNextGeneration(grd);
-//			populateCanvas(evenCanvas);
-//			toggle=false;
-//			
-//		}
-//		else
-//		{
-//			evenCanvas.getChildren().clear();
-//			window.getChildren().remove(evenCanvas);
-//			grd=oddGameBoard.generateNextGeneration(grd);
-//			populateCanvas(oddCanvas);
-//			toggle=true;
-//			
-//		}
 
-		populateCanvas(evenCanvas, null);
 	}
 
 	/**********
